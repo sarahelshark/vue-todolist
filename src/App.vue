@@ -22,8 +22,8 @@ export default {
   methods: {
     removeTask(index) {
       console.log("rimuovi questa task", index);
-      this.tasks.splice(index,1);
-      //.splice mi serve perrimovere un elemento dal suo indice 
+      this.tasks.splice(index, 1);
+      //.splice mi serve perrimovere un elemento dal suo indice
     },
   },
 };
@@ -32,7 +32,7 @@ export default {
 <template>
   <h1>to do list</h1>
 
-  <ul>
+  <ul v-if="tasks.length > 0">
     <li v-for="(task, index) in tasks">
       <span :style="{ textDecoration: task.done ? 'line-through' : '' }">
         {{ task.text }}
@@ -64,6 +64,9 @@ export default {
       -->
     </li>
   </ul>
+  <p v-else> 
+    Sei stato bravissimo, vai a rilassarti ora! :D
+  </p>
 </template>
 
 <style></style>
