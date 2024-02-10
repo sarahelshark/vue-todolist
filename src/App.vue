@@ -30,7 +30,14 @@ export default {
   <ul>
     <li v-for="task in tasks">
       <span :style="{textDecoration: task.done ? 'line-through': ''}">  {{ task.text }}
-      </span>  <!--con style binding posso far passare oggetto -->
+      </span>  
+      <!--con style binding posso far passare oggetto, altrimnenti potrei impotare bootstrap e usare il class binding v-bind:class="{}",sarebbe stato:
+
+        <span v-bind:class="{'text-decoration-line-through' : task.done}"> 
+           {{ task.text }}
+        </span>      text-decoration-line-through> la classe di bs5
+      
+      --> 
     </li>
   </ul>
 
