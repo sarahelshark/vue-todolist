@@ -22,6 +22,8 @@ export default {
   methods: {
     removeTask(index) {
       console.log("rimuovi questa task", index);
+      this.tasks.splice(index,1);
+      //.splice mi serve perrimovere un elemento dal suo indice 
     },
   },
 };
