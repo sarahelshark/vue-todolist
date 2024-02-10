@@ -3,6 +3,7 @@ export default {
   name: "App",
   data() {
     return {
+      newTask:'',
       tasks: [
         {
           text: "Learn HTML",
@@ -34,7 +35,7 @@ export default {
     <h1 class>to do list</h1>
 
     <div class="input-group mb-3">
-       <input type="text">
+       <input  type="text" v-model="newTask">
        <button class="btn btn-dark">add</button>
     </div>
     
