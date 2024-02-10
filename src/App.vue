@@ -25,7 +25,7 @@ export default {
 </script>
 
 <template>
-  <h1>to do list</h1>
+  <h1 >to do list</h1>
 
   <ul>
     <li v-for="task in tasks">
