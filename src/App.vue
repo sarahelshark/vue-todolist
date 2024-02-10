@@ -4,6 +4,10 @@ export default {
   data() {
     return {
       newTask: "",
+      /*newTask: {
+          text: '',
+          done: false
+        },*/
       error: false, //oppure null
       tasks: [
         {
@@ -31,9 +35,9 @@ export default {
       console.log("aggiungi nuova task ad array di tasks", this.newTask);
 
       if (this.newTask.length > 5) {
-        this.error=false;
+        this.error = false;
         this.tasks.unshift(this.newTask);
-        this.newTask =  "";
+        this.newTask = "";
       } else {
         this.error = "la task deve essere lunga min 5 caratteri";
       }
@@ -47,7 +51,7 @@ export default {
     <h1 class>to do list</h1>
 
     <div class="input-group mb-3">
-      <input type="text" v-model="newTask" @keyup.enter="addTask"/>
+      <input type="text" v-model="newTask" @keyup.enter="addTask" />
       <button class="btn btn-dark" @click="addTask">add</button>
     </div>
     <span class="text-danger" v-if="error">{{ error }}</span>
