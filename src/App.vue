@@ -3,93 +3,134 @@ export default {
   name: "App",
   data() {
     return {
-      newTask: {
-          text: '',
-          done: false
-        },
-      error: false, //oppure null
       tasks: [
         {
-          text: "Learn HTML",
+          text: "learn HTML",
           done: true,
+
         },
         {
-          text: "Learn CSS",
+          text: "learn JS",
           done: true,
+
         },
         {
-          text: "Learn VUE",
+          text: "learn Vue",
           done: false,
+
         },
       ],
-    };
+      newTask: "",
+      error: false,
+      fullList: false,
+    }
+
   },
   methods: {
-    removeTask(index) {
-      console.log("rimuovi questa task", index);
-      this.tasks.splice(index, 1);
-      //.splice mi serve perrimovere un elemento dal suo indice
+    deleteTask(i) {
+      this.tasks.splice(i, 1);
+      if (this.tasks.length === 0) {
+        this.fullList = false;
+      };
+      let itemList = []
+      this.tasks.forEach((task, index) => {
+        if (task.done === false) {
+          itemList.push(index);
+        };
+        if (itemList === "") {
+          this.fullList = true;
+        } else { this.fullList = false };
+        console.log(itemList);
+      });
     },
     addTask() {
-      console.log("aggiungi nuova task ad array di tasks", this.newTask);
+      if (this.newTask != "" && this.newTask.length>5) {
+        const newTaskEl = { text: this.newTask, done: false, };
+        let included;
+        this.tasks.forEach(task => {
+          if (task.text == newTaskEl.text) {
+            included = true;
+          };
+        });
+        if (!included) {
+          this.error = false;
+          this.tasks.push(newTaskEl);
+          this.newTask = "";
+          this.fullList = false;
+          console.log(this.tasks);
+        } else { this.error = "il tuo task risulta inserito" };
 
-      if (this.newTask.length > 5) {
-        this.error = false;
-        this.tasks.unshift(this.newTask);
-        this.newTask = "";
-      } else {
-        this.error = "la task deve essere lunga min 5 caratteri";
-      }
+      }else { this.error = "non puoi lasciare vuoto! aggiungi almeno 5 caratteri!" }
+      
     },
-  },
-};
+    allDone(i) {
+      if (this.tasks[i].done == true) {
+        this.tasks[i].done = false;
+      } else { this.tasks[i].done = true };
+      let count = 0;
+      this.tasks.forEach(task => {
+        if (task.done == true) {
+          count += 1;
+        };
+      });
+
+      if (count == this.tasks.length) {
+        this.fullList = true;
+      } else { this.fullList = false };
+      console.log(count);
+      console.log(this.tasks.length);
+    },
+    emptyList() {
+      this.tasks = [];
+      this.fullList = false;
+    }
+  }
+}
 </script>
 
 <template>
-  <div class="card p-6 shadow">
-    <h1 class>to do list</h1>
-
-    <div class="input-group mb-3">
-      <input type="text" v-model="newTask.text" @keyup.enter="addTask" />
-      <button class="btn btn-dark" @click="addTask">add</button>
+  <div class="container text-center my-5">
+    <h1 class="text-dark">Todo List</h1>
+    <div class="input-group mb-3 ms-auto">
+      <input class="form-control" v-model="newTask" @keyup.enter="addTask" type="text" name="newTask" id="newTask"
+        placeholder="Insert your new Task">
+      <button class="btn btn-outline-dark" @click="addTask">Add</button>
     </div>
-    <span class="text-danger" v-if="error">{{ error }}</span>
-    <div class="ul list-group">
-      <ul v-if="tasks.length > 0">
-        <li v-for="(task, index) in tasks">
-          <span :style="{ textDecoration: task.done ? 'line-through' : '' }">
-            {{ task.text }}
 
-            <span v-on:click="removeTask(index)">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                class="bi bi-x-circle"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"
-                />
-                <path
-                  d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"
-                />
-              </svg>
-            </span>
-          </span>
-          <!--con style binding posso far passare oggetto, altrimnenti potrei impotare bootstrap e usare il class binding v-bind:class="{}",sarebbe stato:
+    <p class="text-danger" v-if="error">{{ error }}</p>
 
-        <span v-bind:class="{'text-decoration-line-through' : task.done}"> 
-           {{ task.text }}
-        </span>      text-decoration-line-through> la classe di bs5
-      
-      -->
-        </li>
-      </ul>
-      <p v-else>niente da fare, buon relax! :D</p>
-    </div>
+    <ul class="list-group">
+      <li class="list-group-item d-flex" v-for="( task, index ) in  tasks ">
+        <input class="check form-check-input me-3" type="checkbox" v-model="task.done" @click="allDone(index)">
+        <div style="width: 100%;" class="d-flex justify-content-between align.items-center">
+          <div class="task" :class="{ done: task.done }" @click="allDone(index)">{{ task.text
+          }}</div>
+          <div class="delete" @click="deleteTask(index)"> x</div>
+        </div>
+      </li>
+    </ul>
+    <button v-if="fullList" class="btn btn-primary mt-5" @click="emptyList">Empty the list</button>
+    <h3 v-if="tasks == ''">You have nothing else to do!</h3>
   </div>
 </template>
 
-<style></style>
+<style>
+/*#region reset */
+
+
+/* #endregion */
+
+.done {
+  text-decoration: line-through;
+}
+
+.delete:hover {
+  color: #dc3545;
+}
+
+.check,
+.task,
+.delete {
+  cursor: pointer;
+}
+</style>
