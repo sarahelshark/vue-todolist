@@ -3,11 +3,10 @@ export default {
   name: "App",
   data() {
     return {
-      newTask: "",
-      /*newTask: {
+      newTask: {
           text: '',
           done: false
-        },*/
+        },
       error: false, //oppure null
       tasks: [
         {
@@ -51,7 +50,7 @@ export default {
     <h1 class>to do list</h1>
 
     <div class="input-group mb-3">
-      <input type="text" v-model="newTask" @keyup.enter="addTask" />
+      <input type="text" v-model="newTask.text" @keyup.enter="addTask" />
       <button class="btn btn-dark" @click="addTask">add</button>
     </div>
     <span class="text-danger" v-if="error">{{ error }}</span>
